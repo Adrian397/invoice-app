@@ -2,7 +2,9 @@ import { ReactElement } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { imgBasePath } from "../../../App.utils";
-import { Invoice, options, StyledProps } from "../InvoiceList.utils";
+import { Invoice } from "../../Root/Root.utils";
+import { options } from "../InvoiceList.utils";
+import { StyledProps } from "./InvoiceListItem.utils";
 
 type Props = {
   item: Invoice;
@@ -14,7 +16,9 @@ const InvoiceListItem = ({ item, invoiceList }: Props): ReactElement => {
 
   const handleInvoicePreview = (id: string) => {
     const invoice = invoiceList.find((invoice) => invoice.id === id);
-    navigate(`/invoice/${invoice?.id}`);
+    if (invoice) {
+      navigate(`/invoice/${invoice.id}`);
+    }
   };
 
   return (

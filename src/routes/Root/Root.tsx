@@ -1,16 +1,38 @@
-import { ReactElement } from "react";
-import { Outlet } from "react-router-dom";
+import { ReactElement, useEffect, useState } from "react";
+import { Outlet, useOutletContext } from "react-router-dom";
 import { Bar } from "../../components/Bar/Bar";
+import { Invoice } from "./Root.utils";
 
-type Props = {};
+const Root = (): ReactElement => {
+  const [invoiceList, setInvoiceList] = useState<Invoice[]>([]);
 
-const Root = (props: Props): ReactElement => {
+  useEffect(() => {
+    setInvoiceList(
+      JSON.parse(window.localStorage.getItem("invoiceData") || "[]")
+    );
+
+    const fetchData = async () => {
+      const response = await fetch("./data.json");
+      const data = await response.json();
+
+      window.localStorage.setItem("invoiceData", JSON.stringify(data));
+
+      setInvoiceList(data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div>
       <Bar />
-      <Outlet />
+      <Outlet context={{ invoiceList }} />
     </div>
   );
+};
+
+export const useInvoiceData = () => {
+  return useOutletContext<{ invoiceList: Invoice[] }>();
 };
 
 export default Root;

@@ -1,24 +1,13 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement } from "react";
 import styled from "styled-components";
-import { Invoice } from "./InvoiceList.utils";
+import { useInvoiceData } from "../Root/Root";
 import { InvoiceListHeader } from "./InvoiceListHeader/InvoiceListHeader";
 import InvoiceListItem from "./InvoiceListItem/InvoiceListItem";
 
 type Props = {};
 
 const InvoiceList = (props: Props): ReactElement => {
-  const [invoiceList, setInvoiceList] = useState<Invoice[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("./data.json");
-      const data = await response.json();
-
-      setInvoiceList(data);
-    };
-
-    fetchData();
-  }, []);
+  const { invoiceList } = useInvoiceData();
 
   return (
     <div>
