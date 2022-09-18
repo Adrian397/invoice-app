@@ -5,7 +5,7 @@ type AddressType = {
   country: string;
 };
 
-type ItemsType = {
+type ItemType = {
   name: string;
   quantity: number;
   price: number;
@@ -19,7 +19,7 @@ export type Invoice = {
   createdAt: string;
   description: string;
   id: string;
-  items: ItemsType;
+  items: ItemType[];
   paymentDue: string;
   paymentTerms: number;
   senderAddress: AddressType;

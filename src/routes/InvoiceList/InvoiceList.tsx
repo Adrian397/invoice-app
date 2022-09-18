@@ -1,38 +1,76 @@
 import { ReactElement } from "react";
 import styled from "styled-components";
+import { imgBasePath } from "../../App.utils";
 import { useInvoiceData } from "../Root/Root";
 import { InvoiceListHeader } from "./InvoiceListHeader/InvoiceListHeader";
 import InvoiceListItem from "./InvoiceListItem/InvoiceListItem";
 
-type Props = {};
-
-const InvoiceList = (props: Props): ReactElement => {
+const InvoiceList = (): ReactElement => {
   const { invoiceList } = useInvoiceData();
 
   return (
-    <div>
+    <Wrapper>
       <InvoiceListHeader />
-      <List>
-        {invoiceList.map((item) => {
-          return (
-            <InvoiceListItem
-              key={item.id}
-              item={item}
-              invoiceList={invoiceList}
-            />
-          );
-        })}
-      </List>
-    </div>
+      {invoiceList && (
+        <List>
+          {invoiceList.map((item) => {
+            return (
+              <InvoiceListItem
+                key={item.id}
+                item={item}
+                invoiceList={invoiceList}
+              />
+            );
+          })}
+        </List>
+      )}
+      {!invoiceList.length && (
+        <NoListItems>
+          <img src={imgBasePath + "illustration-empty.svg"} alt="no invoices" />
+          <h1>There is nothing here</h1>
+          <p>
+            Create an invoice by clicking the <br />
+            <strong>New Invoice</strong> button and get started
+          </p>
+        </NoListItems>
+      )}
+    </Wrapper>
   );
 };
 
-const List = styled.div`
+const Wrapper = styled.div`
   max-width: 60rem;
-  margin: 0 auto;
+  margin: 5rem auto 0 auto;
+  display: flex;
+  flex-direction: column;
+`;
+
+const List = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+`;
+
+const NoListItems = styled.div`
+  width: max-content;
+  margin: 0 auto;
+  text-align: center;
+
+  img {
+    margin: 6rem 0 4rem 0;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: rgba(12, 14, 22, 1);
+  }
+
+  p {
+    color: rgba(136, 142, 176, 1);
+    font-size: 1rem;
+    line-height: 18px;
+  }
 `;
 
 export default InvoiceList;

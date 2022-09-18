@@ -6,13 +6,14 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     font-family: 'League Spartan', sans-serif;
+  
     
 }
 
 
 body{
     background-color: rgba(248, 248, 251, 1);
-}
+    }
 `;
 
 export default GlobalStyle;

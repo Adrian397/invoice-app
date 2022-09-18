@@ -1,10 +1,9 @@
 import { ReactElement } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
-import { imgBasePath } from "../../../App.utils";
+import { imgBasePath, StyledProps } from "../../../App.utils";
 import { Invoice } from "../../Root/Root.utils";
 import { options } from "../InvoiceList.utils";
-import { StyledProps } from "./InvoiceListItem.utils";
 
 type Props = {
   item: Invoice;
@@ -37,7 +36,9 @@ const InvoiceListItem = ({ item, invoiceList }: Props): ReactElement => {
         <ItemName>{item.clientName}</ItemName>
       </LeftItemProps>
       <RightItemProps>
-        <ItemTotal>£ {item.total.toLocaleString("en-US")}</ItemTotal>
+        <ItemTotal>
+          £ {item.total.toLocaleString("en", { minimumFractionDigits: 2 })}
+        </ItemTotal>
         <ItemStatus status={item.status}>
           <div />
           <span>{item.status}</span>
