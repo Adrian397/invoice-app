@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useMemo, useState } from "react";
 import styled from "styled-components";
 import { imgBasePath } from "../../App.utils";
 import { useInvoiceData } from "../Root/Root";
@@ -8,12 +8,29 @@ import InvoiceListItem from "./InvoiceListItem/InvoiceListItem";
 const InvoiceList = (): ReactElement => {
   const { invoiceList } = useInvoiceData();
 
+  const [activeStatuses, setActiveStauses] = useState<string[]>([]);
+
+  const filteredInvoices = useMemo(() => {
+    if (activeStatuses.length === 0) {
+      return invoiceList;
+    }
+    return invoiceList.filter((invoice) =>
+      activeStatuses.includes(invoice.status)
+    );
+  }, [activeStatuses, invoiceList]);
+
+  // const filteredInvoicesWithoutMemo = activeStatuses.length === 0 ? invoiceList : invoiceList.filter(invoice => activeStatuses.includes(invoice.status));
+
   return (
     <Wrapper>
-      <InvoiceListHeader />
+      <InvoiceListHeader
+        activeStatuses={activeStatuses}
+        setActiveStauses={setActiveStauses}
+        filteredInvoices={filteredInvoices}
+      />
       {invoiceList && (
         <List>
-          {invoiceList.map((item) => {
+          {filteredInvoices.map((item) => {
             return (
               <InvoiceListItem
                 key={item.id}

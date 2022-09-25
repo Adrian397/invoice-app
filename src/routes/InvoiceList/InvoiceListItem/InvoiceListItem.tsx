@@ -58,8 +58,13 @@ const ListItem = styled.div`
   border-radius: 8px;
   box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.100397);
   height: 4.5rem;
-  padding: 0 1.5rem 0 2rem;
+  padding: 0 1.5rem 0 1.8rem;
   cursor: pointer;
+  border: 2px solid transparent;
+
+  &:hover {
+    border: 2px solid rgba(124, 93, 250, 1);
+  }
 `;
 
 const LeftItemProps = styled.div`

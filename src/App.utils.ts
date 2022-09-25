@@ -4,4 +4,5 @@ export const imgBasePath =
 export type StyledProps = {
   status?: string;
   isVisible?: boolean;
+  activeStatuses?: string[];
 };

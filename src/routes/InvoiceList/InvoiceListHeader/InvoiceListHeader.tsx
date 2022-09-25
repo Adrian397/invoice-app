@@ -1,57 +1,76 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { imgBasePath, StyledProps } from "../../../App.utils";
+import { Invoice } from "../../Root/Root.utils";
+import { NewInvoiceForm } from "../NewInvoiceForm/NewInvoiceForm";
+import { countFilteredInvoices } from "./InvoiceListHeader.utils";
 
-export const InvoiceListHeader = () => {
-  const statuses = ["Draft", "Pending", "Paid"];
+type Props = {
+  activeStatuses: string[];
+  setActiveStauses: React.Dispatch<React.SetStateAction<string[]>>;
+  filteredInvoices: Invoice[];
+};
 
-  const [isVisible, setIsVisible] = useState(false);
+export const InvoiceListHeader = ({
+  activeStatuses,
+  setActiveStauses,
+  filteredInvoices,
+}: Props) => {
+  const statuses = ["draft", "pending", "paid"];
 
-  const [checkedState, setCheckedState] = useState(
-    new Array(statuses.length).fill(false)
-  );
+  const [isFilterMenuVisible, setIsFilterMenuVisible] = useState(false);
 
-  const handleCheckboxChange = (position: number) => {
-    const updatedCheckedState = checkedState.map((item, index) =>
-      index === position ? !item : item
-    );
-    setCheckedState(updatedCheckedState);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
+  const handleCheckboxChange = (status: string) => {
+    if (activeStatuses.includes(status)) {
+      setActiveStauses(activeStatuses.filter((s) => s !== status));
+    } else {
+      setActiveStauses([...activeStatuses, status]);
+    }
   };
 
   return (
     <Header>
-      <Info>
-        <h1>Invoices</h1>
-        <p>There are 7 total invoices</p>
+      <Info activeStatuses={activeStatuses}>
+        <H1 activeStatuses={activeStatuses}>Invoices</H1>
+        <p>{countFilteredInvoices(activeStatuses, filteredInvoices)}</p>
       </Info>
       <Buttons>
         <Dropdown>
-          <button onClick={() => setIsVisible((prevState) => !prevState)}>
+          <button
+            onClick={() => setIsFilterMenuVisible((prevState) => !prevState)}
+          >
             <span>Filter by status</span>
             <Arrow
-              isVisible={isVisible}
+              isVisible={isFilterMenuVisible}
               src={imgBasePath + "icon-arrow-down.svg"}
               alt="arrow"
             />
           </button>
-          <Menu isVisible={isVisible}>
+          <Menu isVisible={isFilterMenuVisible}>
             {statuses.map((status, index) => (
               <label key={index}>
                 <input
                   type="checkbox"
-                  checked={checkedState[index]}
-                  onChange={() => handleCheckboxChange(index)}
+                  checked={activeStatuses.includes(status)}
+                  onChange={() => handleCheckboxChange(status)}
                 />
                 <span>{status}</span>
               </label>
             ))}
           </Menu>
         </Dropdown>
-        <NewInvoice>
+        <NewInvoice onClick={() => setIsFormVisible(true)}>
           <img src={imgBasePath + "icon-plus.svg"} alt="add new invoice" />
           <span>New Invoice</span>
         </NewInvoice>
       </Buttons>
+
+      <NewInvoiceForm
+        isFormVisible={isFormVisible}
+        onFormVisibilityChange={setIsFormVisible}
+      />
     </Header>
   );
 };
@@ -63,22 +82,36 @@ const Header = styled.header`
   margin-bottom: 4rem;
 `;
 
-const Info = styled.div`
+const Info = styled.div<StyledProps>`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
   gap: 0.5rem;
+  filter: ${({ activeStatuses }) =>
+    activeStatuses
+      ? activeStatuses?.length > 0
+        ? "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))"
+        : ""
+      : ""};
 
-  h1 {
-    font-weight: 700;
-    color: rgba(12, 14, 22, 1);
-    letter-spacing: -1px;
-  }
+  transition: filter 120ms ease;
 
   p {
     color: rgba(136, 142, 176, 1);
     font-weight: 500;
   }
+`;
+
+const H1 = styled.h1<StyledProps>`
+  font-weight: 700;
+  color: rgba(12, 14, 22, 1);
+  letter-spacing: -1px;
+  text-shadow: ${({ activeStatuses }) =>
+    activeStatuses
+      ? activeStatuses?.length > 0
+        ? "0px 4px 4px rgba(0, 0, 0, 0.25);"
+        : ""
+      : ""}; ;
 `;
 
 const Buttons = styled.div`
@@ -112,7 +145,7 @@ const Dropdown = styled.div`
 const Arrow = styled.img<StyledProps>`
   transform: ${({ isVisible }) =>
     isVisible ? "rotate(180deg)" : "rotate(0deg)"};
-  transition: 0.3s transform;
+  transition: transform 0.3s;
 `;
 
 const Menu = styled.div<StyledProps>`
@@ -130,7 +163,7 @@ const Menu = styled.div<StyledProps>`
   transform: ${({ isVisible }) =>
     isVisible ? "translateY(0)" : "translateY(-1rem)"};
   opacity: ${({ isVisible }) => (isVisible ? "1" : "0")};
-  transition: 0.3s all ease-in-out;
+  transition: all 0.3s ease-in-out;
 
   label {
     display: flex;
@@ -166,7 +199,7 @@ const Menu = styled.div<StyledProps>`
       background-repeat: no-repeat;
       background-position: 50% 50%;
       transform: scale(0);
-      transition: 120ms transform ease-in-out;
+      transition: transform 120ms ease-in-out;
       border-radius: 2px;
     }
 
@@ -178,6 +211,7 @@ const Menu = styled.div<StyledProps>`
       color: rgba(12, 14, 22, 1);
       font-weight: 700;
       font-size: 15px;
+      text-transform: capitalize;
     }
   }
 `;

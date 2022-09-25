@@ -26,13 +26,16 @@ const Root = (): ReactElement => {
   return (
     <div>
       <Bar />
-      <Outlet context={{ invoiceList }} />
+      <Outlet context={{ invoiceList, setInvoiceList }} />
     </div>
   );
 };
 
 export const useInvoiceData = () => {
-  return useOutletContext<{ invoiceList: Invoice[] }>();
+  return useOutletContext<{
+    invoiceList: Invoice[];
+    setInvoiceList: React.Dispatch<React.SetStateAction<Invoice[]>>;
+  }>();
 };
 
 export default Root;

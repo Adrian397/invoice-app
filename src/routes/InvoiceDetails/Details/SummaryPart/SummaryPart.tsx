@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { Fragment, ReactElement } from "react";
 import styled from "styled-components";
 import { Invoice } from "../../../Root/Root.utils";
 
@@ -21,8 +21,8 @@ export const SummaryPart = ({ invoice }: Props): ReactElement => {
           <p>QTY.</p>
           <p>Price</p>
           <p>Total</p>
-          {invoice?.items.map((item) => (
-            <>
+          {invoice?.items.map((item, index) => (
+            <Fragment key={index}>
               <h3>{item.name}</h3>
               <span>{item.quantity}</span>
               <span>
@@ -37,7 +37,7 @@ export const SummaryPart = ({ invoice }: Props): ReactElement => {
                   minimumFractionDigits: 2,
                 })}
               </span>
-            </>
+            </Fragment>
           ))}
         </Items>
       </SumUp>
