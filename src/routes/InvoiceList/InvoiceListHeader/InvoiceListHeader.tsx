@@ -18,7 +18,7 @@ export const InvoiceListHeader = ({
 }: Props) => {
   const statuses = ["draft", "pending", "paid"];
 
-  const [isFilterMenuVisible, setIsFilterMenuVisible] = useState(false);
+  const [isFilterDropdownVisible, setIsFilterDropdownVisible] = useState(false);
 
   const [isFormVisible, setIsFormVisible] = useState(false);
 
@@ -37,18 +37,20 @@ export const InvoiceListHeader = ({
         <p>{countFilteredInvoices(activeStatuses, filteredInvoices)}</p>
       </Info>
       <Buttons>
-        <Dropdown>
+        <Menu>
           <button
-            onClick={() => setIsFilterMenuVisible((prevState) => !prevState)}
+            onClick={() =>
+              setIsFilterDropdownVisible((prevState) => !prevState)
+            }
           >
             <span>Filter by status</span>
             <Arrow
-              isVisible={isFilterMenuVisible}
+              isVisible={isFilterDropdownVisible}
               src={imgBasePath + "icon-arrow-down.svg"}
               alt="arrow"
             />
           </button>
-          <Menu isVisible={isFilterMenuVisible}>
+          <Dropdown isVisible={isFilterDropdownVisible}>
             {statuses.map((status, index) => (
               <label key={index}>
                 <input
@@ -59,8 +61,8 @@ export const InvoiceListHeader = ({
                 <span>{status}</span>
               </label>
             ))}
-          </Menu>
-        </Dropdown>
+          </Dropdown>
+        </Menu>
         <NewInvoice onClick={() => setIsFormVisible(true)}>
           <img src={imgBasePath + "icon-plus.svg"} alt="add new invoice" />
           <span>New Invoice</span>
@@ -119,7 +121,7 @@ const Buttons = styled.div`
   align-items: center;
 `;
 
-const Dropdown = styled.div`
+const Menu = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -148,14 +150,13 @@ const Arrow = styled.img<StyledProps>`
   transition: transform 0.3s;
 `;
 
-const Menu = styled.div<StyledProps>`
+const Dropdown = styled.div<StyledProps>`
   position: absolute;
   top: 2.5rem;
   background-color: white;
   width: 100%;
   display: flex;
   flex-direction: column;
-
   gap: 1rem;
   border-radius: 8px;
   box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
@@ -163,6 +164,7 @@ const Menu = styled.div<StyledProps>`
   transform: ${({ isVisible }) =>
     isVisible ? "translateY(0)" : "translateY(-1rem)"};
   opacity: ${({ isVisible }) => (isVisible ? "1" : "0")};
+  pointer-events: ${({ isVisible }) => (isVisible ? "all" : "none")};
   transition: all 0.3s ease-in-out;
 
   label {

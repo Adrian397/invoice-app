@@ -9,8 +9,8 @@ export const BillFrom = (props: Props): ReactElement => {
   return (
     <Bill>
       <p>Bill From</p>
-      <WideInput forId="clientNameFrom" id="clientNameFrom">
-        Client's Name
+      <WideInput forId="streetAddressFrom" id="streetAddressFrom">
+        Street Address
       </WideInput>
 
       <NarrowInputs>

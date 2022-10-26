@@ -41,7 +41,7 @@ const InvoiceList = (): ReactElement => {
           })}
         </List>
       )}
-      {!invoiceList.length && (
+      {invoiceList.length === 0 && (
         <NoListItems>
           <img src={imgBasePath + "illustration-empty.svg"} alt="no invoices" />
           <h1>There is nothing here</h1>

@@ -1,6 +1,10 @@
 import { ReactElement } from "react";
 import styled from "styled-components";
 import { StyledProps } from "../../../App.utils";
+import { DateButton } from "../../../components/DateButton/DateButton";
+import FormFooterButton from "../../../components/FormFooterButton/FormFooterButton";
+import { PaymentTermsButton } from "../../../components/PaymentTermsButton/PaymentTermsButton";
+import { WideInput } from "../../../components/WideInput/WideInput";
 import { BillFrom } from "./BillFrom/BillFrom";
 import { BillTo } from "./BillTo/BillTo";
 
@@ -20,12 +24,90 @@ export const NewInvoiceForm = ({
     >
       <Form isVisible={isFormVisible} onClick={(e) => e.stopPropagation()}>
         <h2>New Invoice</h2>
-        <BillFrom />
-        <BillTo />
+        <div>
+          <BillFrom />
+          <BillTo />
+          <Box>
+            <div>
+              <DateButton />
+              <PaymentTermsButton />
+            </div>
+            <WideInput
+              forId="Project Description"
+              id="Project Description"
+              placeholder="e.g. Graphic Design Service"
+            >
+              Project Description
+            </WideInput>
+          </Box>
+          <ItemList>
+            <h2>Item List</h2>
+            <AddList>
+              <div>
+                <span>Item Name</span>
+                <span>Qty.</span>
+                <span>Price</span>
+                <span>Total</span>
+              </div>
+            </AddList>
+          </ItemList>
+        </div>
+        <Footer>
+          <FormFooterButton
+            bgColor="rgba(249, 250, 254, 1)"
+            txtColor="rgba(126, 136, 195, 1)"
+            type="button"
+          >
+            Discard
+          </FormFooterButton>
+          <div>
+            <FormFooterButton
+              bgColor="rgba(55, 59, 83, 1)"
+              txtColor="rgba(136, 142, 176, 1)"
+              type="button"
+            >
+              Save as Draft
+            </FormFooterButton>
+            <FormFooterButton
+              bgColor="rgba(124, 93, 250, 1)"
+              txtColor="white"
+              type="submit"
+            >
+              Save & Send
+            </FormFooterButton>
+          </div>
+        </Footer>
       </Form>
     </Wrapper>
   );
 };
+
+const Footer = styled.footer`
+  width: 100%;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 2.1rem 2rem 0rem;
+
+  div {
+    display: flex;
+    gap: 0.5rem;
+  }
+`;
+
+const ItemList = styled.div`
+  width: 100%;
+  background-color: blue;
+
+  h2 {
+    color: rgba(119, 127, 152, 1);
+    font-weight: bold;
+    font-size: 1.125rem;
+  }
+`;
+
+const AddList = styled.div``;
 
 const Wrapper = styled.div<StyledProps>`
   position: absolute;
@@ -42,12 +124,12 @@ const Wrapper = styled.div<StyledProps>`
 `;
 
 const Form = styled.form<StyledProps>`
-  padding-top: 3.5rem;
-  padding-bottom: 2rem;
-  padding-right: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  padding: 3.5rem 2rem 0rem 9.875rem;
   height: 100vh;
-  width: 719px;
-  padding-left: 159px;
+  width: 45rem;
+
   position: fixed;
   top: 0;
   left: 0;
@@ -58,7 +140,43 @@ const Form = styled.form<StyledProps>`
   background-color: rgba(255, 255, 255, 1);
   transition: transform 0.5s ease;
 
+  input:hover {
+    border: 1px solid rgba(146, 119, 255, 1);
+  }
+
+  button:not(footer button):hover {
+    border: 1px solid rgba(146, 119, 255, 1);
+  }
+
   & > h2 {
     margin-bottom: 2.5rem;
+  }
+
+  & > div {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 1.5rem;
+    scrollbar-color: rgba(223, 227, 250, 1) white;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+      background-color: white;
+      width: 0.6rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(223, 227, 250, 1);
+      border-radius: 4px;
+    }
+  }
+`;
+
+const Box = styled.div`
+  width: 100%;
+
+  & > div:nth-of-type(1) {
+    display: flex;
+    width: 100%;
+    gap: 24px;
   }
 `;

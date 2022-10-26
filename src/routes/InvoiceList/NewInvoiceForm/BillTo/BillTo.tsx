@@ -41,6 +41,7 @@ export const BillTo = (props: Props): ReactElement => {
 
 const Bill = styled.div`
   width: 100%;
+  margin-bottom: 3rem;
 
   p {
     color: rgba(124, 93, 250, 1);
